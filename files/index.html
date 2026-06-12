@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buteku Bar</title>
+<meta name="description" content="Buteku Bar – Navegantes. Cardápio e delivery.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: #0e0e0e;
+    font-family: 'Inter', sans-serif;
+    color: #f0ece0;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 32px 20px;
+  }
+  .wrap {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .logo-wrap {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 16px;
+    border: 1.5px solid #2a2a2a;
+  }
+  .logo-wrap img {
+    width: 86px;
+    height: 86px;
+    object-fit: contain;
+  }
+  h1 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: #c8a44a;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .sub {
+    font-size: 12px;
+    color: rgba(240,236,224,0.35);
+    letter-spacing: 1px;
+    margin-bottom: 36px;
+  }
+  .btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: transform 0.15s ease, background 0.15s ease;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-delivery {
+    background: #c8a44a;
+  }
+  .btn-cardapio {
+    background: transparent;
+    border: 1px solid rgba(240,236,224,0.12);
+  }
+  .btn-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+  }
+  .btn-delivery .btn-icon {
+    background: rgba(0,0,0,0.18);
+  }
+  .btn-cardapio .btn-icon {
+    background: rgba(200,164,74,0.1);
+  }
+  .btn-texts {}
+  .btn-eyebrow {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .btn-title {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  .btn-delivery .btn-eyebrow { color: rgba(0,0,0,0.45); }
+  .btn-delivery .btn-title { color: #0e0e0e; }
+  .btn-delivery .btn-icon svg path,
+  .btn-delivery .btn-icon svg rect,
+  .btn-delivery .btn-icon svg circle { stroke: #0e0e0e; }
+  .btn-cardapio .btn-eyebrow { color: rgba(240,236,224,0.3); }
+  .btn-cardapio .btn-title { color: #f0ece0; }
+  .btn-cardapio .btn-icon svg path,
+  .btn-cardapio .btn-icon svg rect { stroke: #c8a44a; }
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(240,236,224,0.06);
+    margin: 8px 0 20px;
+  }
+  .footer {
+    font-size: 11px;
+    color: rgba(240,236,224,0.18);
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo-wrap">
+    <img src="logo.png" alt="Buteku Bar">
+  </div>
+  <h1>Buteku Bar</h1>
+  <p class="sub">Navegantes · De terça a domingo</p>
+
+  <a class="btn btn-delivery" href="https://pedido.anota.ai/loja/buteku-choperia" target="_blank" rel="noopener">
+    <span class="btn-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e0e0e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 11l19-9-9 19-2-8-8-2z"/>
+      </svg>
+    </span>
+    <span class="btn-texts">
+      <span class="btn-eyebrow">peça agora</span>
+      <span class="btn-title">Delivery</span>
+    </span>
+  </a>
+
+  <a class="btn btn-cardapio" href="cardapio.html">
+    <span class="btn-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8a44a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 6h16M4 10h16M4 14h10"/>
+        <path d="M19 14l2 2-2 2"/>
+      </svg>
+    </span>
+    <span class="btn-texts">
+      <span class="btn-eyebrow">veja tudo</span>
+      <span class="btn-title">Cardápio completo</span>
+    </span>
+  </a>
+
+  <div class="divider"></div>
+  <span class="footer">butekubar.com.br</span>
+</div>
+</body>
+</html>

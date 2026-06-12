@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardápio – Buteku Bar</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #0e0e0e;
+    font-family: 'Inter', sans-serif;
+    color: #f0ece0;
+    padding-bottom: 60px;
+  }
+
+  /* HEADER */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14,14,14,0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(200,164,74,0.12);
+    padding: 0 20px;
+  }
+  .header-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: rgba(240,236,224,0.5);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition: color 0.15s;
+  }
+  .back-btn:hover { color: #c8a44a; }
+  .back-btn svg { flex-shrink: 0; }
+  .header-logo {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: #c8a44a;
+    text-transform: uppercase;
+  }
+  .delivery-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    background: #c8a44a;
+    color: #0e0e0e;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .delivery-btn:hover { opacity: 0.88; }
+
+  /* NAV CATEGORIAS */
+  .cat-nav {
+    background: #0e0e0e;
+    border-bottom: 1px solid rgba(240,236,224,0.06);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .cat-nav::-webkit-scrollbar { display: none; }
+  .cat-nav-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    padding: 0 16px;
+  }
+  .cat-nav a {
+    flex-shrink: 0;
+    text-decoration: none;
+    color: rgba(240,236,224,0.4);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 14px 12px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .cat-nav a:hover,
+  .cat-nav a.active {
+    color: #c8a44a;
+    border-bottom-color: #c8a44a;
+  }
+
+  /* CONTEÚDO */
+  .content {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* SEÇÃO */
+  .section {
+    padding-top: 40px;
+  }
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #c8a44a;
+    margin-bottom: 4px;
+  }
+  .section-sub {
+    font-size: 12px;
+    color: rgba(240,236,224,0.25);
+    margin-bottom: 20px;
+  }
+  .section-divider {
+    height: 1px;
+    background: rgba(240,236,224,0.07);
+    margin-bottom: 20px;
+  }
+
+  /* SUBSECTION */
+  .subsection-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(240,236,224,0.5);
+    margin: 24px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(240,236,224,0.06);
+  }
+
+  /* ITEM */
+  .item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(240,236,224,0.05);
+  }
+  .item:last-child { border-bottom: none; }
+  .item-info { flex: 1; min-width: 0; }
+  .item-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f0ece0;
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .item-desc {
+    font-size: 12px;
+    color: rgba(240,236,224,0.38);
+    line-height: 1.5;
+  }
+  .item-price {
+    font-size: 15px;
+    font-weight: 600;
+    color: #c8a44a;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .item-price span {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(200,164,74,0.6);
+    margin-right: 2px;
+  }
+
+  /* TABELA (chopp) */
+  .price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+  }
+  .price-table th {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: rgba(240,236,224,0.3);
+    text-align: right;
+    padding: 8px 0 8px 12px;
+    border-bottom: 1px solid rgba(240,236,224,0.06);
+  }
+  .price-table th:first-child { text-align: left; padding-left: 0; }
+  .price-table td {
+    font-size: 13px;
+    color: #f0ece0;
+    text-align: right;
+    padding: 12px 0 12px 12px;
+    border-bottom: 1px solid rgba(240,236,224,0.05);
+  }
+  .price-table td:first-child {
+    text-align: left;
+    padding-left: 0;
+    font-weight: 500;
+  }
+  .price-table .gold { color: #c8a44a; font-weight: 600; }
+  .price-table tr:last-child td { border-bottom: none; }
+
+  /* NOTA */
+  .note {
+    font-size: 11px;
+    color: rgba(240,236,224,0.22);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  .highlight-note {
+    background: rgba(200,164,74,0.07);
+    border-left: 2px solid rgba(200,164,74,0.3);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: rgba(240,236,224,0.5);
+    margin: 14px 0;
+    line-height: 1.5;
+  }
+
+  /* MOLHOS TAGS */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .tag {
+    background: rgba(240,236,224,0.05);
+    border: 1px solid rgba(240,236,224,0.1);
+    border-radius: 20px;
+    font-size: 11px;
+    color: rgba(240,236,224,0.5);
+    padding: 4px 10px;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="back-btn" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Voltar
+    </a>
+    <span class="header-logo">Buteku</span>
+    <a class="delivery-btn" href="https://pedido.anota.ai/loja/buteku-choperia" target="_blank" rel="noopener">
+      Delivery
+    </a>
+  </div>
+</header>
+
+<nav class="cat-nav">
+  <div class="cat-nav-inner">
+    <a href="#beliscar" class="active">Beliscar</a>
+    <a href="#degustar">Degustar</a>
+    <a href="#pizza">Pizza</a>
+    <a href="#maresia">Maresia</a>
+    <a href="#sustancia">Sustância</a>
+    <a href="#burguers">Burguers</a>
+    <a href="#sobremesas">Sobremesas</a>
+    <a href="#chopp">Chopp</a>
+    <a href="#cervejas">Cervejas</a>
+    <a href="#bebidas">Bebidas</a>
+    <a href="#drinks">Drinks</a>
+    <a href="#caipirinhas">Caipirinhas</a>
+    <a href="#doses">Doses</a>
+  </div>
+</nav>
+
+<div class="content">
+
+  <!-- PARA BELISCAR -->
+  <section class="section" id="beliscar">
+    <p class="section-title">Para beliscar</p>
+    <div class="section-divider"></div>
+    <div class="item"><div class="item-info"><p class="item-name">Mix de Amendoim <small style="color:rgba(240,236,224,0.3);font-size:11px">100g</small></p></div><p class="item-price"><span>R$</span>19</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Aipim Frito <small style="color:rgba(240,236,224,0.3);font-size:11px">400g</small></p></div><p class="item-price"><span>R$</span>32</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Polenta Frita <small style="color:rgba(240,236,224,0.3);font-size:11px">400g</small></p></div><p class="item-price"><span>R$</span>32</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Batata Frita <small style="color:rgba(240,236,224,0.3);font-size:11px">400g</small></p></div><p class="item-price"><span>R$</span>37</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Bolinho de Aipim com Linguiça Blumenau <small style="color:rgba(240,236,224,0.3);font-size:11px">10 und.</small></p></div><p class="item-price"><span>R$</span>39</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Bolinho de Aipim com Carne Seca <small style="color:rgba(240,236,224,0.3);font-size:11px">10 und.</small></p></div><p class="item-price"><span>R$</span>39</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Mini Pastel de Camarão <small style="color:rgba(240,236,224,0.3);font-size:11px">6 und.</small></p></div><p class="item-price"><span>R$</span>45</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Tirinhas de Frango à Milanesa <small style="color:rgba(240,236,224,0.3);font-size:11px">500g</small></p></div><p class="item-price"><span>R$</span>49</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Bolinho de Costela <small style="color:rgba(240,236,224,0.3);font-size:11px">9 und.</small></p></div><p class="item-price"><span>R$</span>54</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Torresmo Panceta Suína</p></div><p class="item-price"><span>R$</span>59</p></div>
+    <p class="subsection-title">Adicionais</p>
+    <div class="item"><div class="item-info"><p class="item-name">Queijo Muçarela</p></div><p class="item-price"><span>R$</span>12</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Queijo Muçarela com Bacon</p></div><p class="item-price"><span>R$</span>17</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Queijo Cheddar com Bacon</p></div><p class="item-price"><span>R$</span>17</p></div>
+  </section>
+
+  <!-- PARA DEGUSTAR -->
+  <section class="section" id="degustar">
+    <p class="section-title">Para degustar</p>
+    <div class="section-divider"></div>
+    <div class="highlight-note">Todas as porções acompanham pão de alho, farofa, fritas e molho de sua preferência.</div>
+    <div class="item"><div class="item-info"><p class="item-name">Calabresa Acebolada <small style="color:rgba(240,236,224,0.3);font-size:11px">500g</small></p></div><p class="item-price"><span>R$</span>59</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Isca de Frango na Chapa <small style="color:rgba(240,236,224,0.3);font-size:11px">400g</small></p></div><p class="item-price"><span>R$</span>69</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Linguiça Blumenau na Chapa <small style="color:rgba(240,236,224,0.3);font-size:11px">500g</small></p></div><p class="item-price"><span>R$</span>69</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Tiras de Alcatra Acebolada <small style="color:rgba(240,236,224,0.3);font-size:11px">500g</small></p></div><p class="item-price"><span>R$</span>99</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Mista do Buteku <small style="color:rgba(240,236,224,0.3);font-size:11px">1,2 kg · serve 3 pessoas</small></p><p class="item-desc">Alcatra, frango, calabresa, aipim e batata frita.</p></div><p class="item-price"><span>R$</span>149</p></div>
+    <p class="subsection-title">Adicional</p>
+    <div class="item"><div class="item-info"><p class="item-name">Pão de Alho</p></div><p class="item-price"><span>R$</span>9</p></div>
+  </section>
+
+  <!-- PIZZA BROTO -->
+  <section class="section" id="pizza">
+    <p class="section-title">Pizza Broto</p>
+    <p class="section-sub">Longa fermentação</p>
+    <div class="section-divider"></div>
+    <div class="item"><div class="item-info"><p class="item-name">Marguerita</p></div><p class="item-price"><span>R$</span>34</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Calabresa</p></div><p class="item-price"><span>R$</span>37</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Bacon</p></div><p class="item-price"><span>R$</span>39</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Frango com Catupiry</p></div><p class="item-price"><span>R$</span>42</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">4 Queijos</p></div><p class="item-price"><span>R$</span>44</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Camarão Gratinado</p></div><p class="item-price"><span>R$</span>49</p></div>
+  </section>
+
+  <!-- VAMOS DE MARESIA -->
+  <section class="section" id="maresia">
+    <p class="section-title">Vamos de Maresia</p>
+    <div class="section-divider"></div>
+    <div class="item"><div class="item-info"><p class="item-name">Isca de Peixe <small style="color:rgba(240,236,224,0.3);font-size:11px">500g</small></p></div><p class="item-price"><span>R$</span>49</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Tiras de Tilápia <small style="color:rgba(240,236,224,0.3);font-size:11px">500g</small></p></div><p class="item-price"><span>R$</span>59</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Bolinho de Bacalhau <small style="color:rgba(240,236,224,0.3);font-size:11px">9 und.</small></p></div><p class="item-price"><span>R$</span>64</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Camarão à Milanesa <small style="color:rgba(240,236,224,0.3);font-size:11px">500g</small></p></div><p class="item-price"><span>R$</span>99</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Frutos do Mar do Buteku</p><p class="item-desc">250g camarão à milanesa, 250g de anel de lula à milanesa, 250g de isca de peixe e 3 bolinhos de bacalhau.</p></div><p class="item-price"><span>R$</span>129</p></div>
+    <p class="subsection-title">Escolha seu molho</p>
+    <div class="tags">
+      <span class="tag">Barbecue</span>
+      <span class="tag">Gorgonzola</span>
+      <span class="tag">Maionese Defumada</span>
+      <span class="tag">Maionese Verde</span>
+      <span class="tag">Quatro Queijos</span>
+      <span class="tag">Sweet Chili</span>
+      <span class="tag">Tártaro</span>
+    </div>
+  </section>
+
+  <!-- PARA DAR SUSTÂNCIA -->
+  <section class="section" id="sustancia">
+    <p class="section-title">Para dar sustância</p>
+    <div class="section-divider"></div>
+    <div class="highlight-note">Acompanham arroz e batata frita. Prato individual.</div>
+    <div class="item"><div class="item-info"><p class="item-name">Filé de Frango Grelhado</p></div><p class="item-price"><span>R$</span>42</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Filé de Frango à Parmegiana</p></div><p class="item-price"><span>R$</span>45</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Filé de Alcatra Acebolada</p></div><p class="item-price"><span>R$</span>49</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Filé de Alcatra à Parmegiana</p></div><p class="item-price"><span>R$</span>54</p></div>
+    <p class="subsection-title">Adicional</p>
+    <div class="item"><div class="item-info"><p class="item-name">Feijão</p></div><p class="item-price"><span>R$</span>12</p></div>
+    <p class="subsection-title">Kids</p>
+    <div class="item"><div class="item-info"><p class="item-name">Prato Kids Frango</p><p class="item-desc">Arroz, legumes, filézinho de frango e batata smile.</p></div><p class="item-price"><span>R$</span>34</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Prato Kids Carne</p><p class="item-desc">Arroz, legumes, filézinho de carne e batata smile.</p></div><p class="item-price"><span>R$</span>39</p></div>
+  </section>
+
+  <!-- BURGUERS -->
+  <section class="section" id="burguers">
+    <p class="section-title">Burguers</p>
+    <div class="section-divider"></div>
+    <p class="subsection-title">Smash · acompanham batata frita</p>
+    <div class="item"><div class="item-info"><p class="item-name">Hamburguito</p><p class="item-desc">Pão c/ gergelim, smash burger 100g, queijo cheddar, maionese defumada.</p></div><p class="item-price"><span>R$</span>27</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Saladito</p><p class="item-desc">Pão c/ gergelim, smash burger 100g, queijo cheddar, maionese defumada, alface americana e tomate.</p></div><p class="item-price"><span>R$</span>29</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Franguito</p><p class="item-desc">Pão c/ gergelim, smash frango 100g, queijo cheddar, maionese defumada, alface americana e tomate.</p></div><p class="item-price"><span>R$</span>29</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Baconzito</p><p class="item-desc">Pão c/ gergelim, smash burger 100g, bacon crocante, queijo cheddar e maionese defumada.</p></div><p class="item-price"><span>R$</span>32</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Veganito</p><p class="item-desc">Pão c/ gergelim, burger de carne de soja 100g, alface americana, tomate, relish de pepino e maionese vegana.</p></div><p class="item-price"><span>R$</span>32</p></div>
+    <p class="subsection-title">Gourmet · acompanham batata canoa</p>
+    <div class="item"><div class="item-info"><p class="item-name">Gororoba</p><p class="item-desc">Pão brioche, burger de costela 150g, queijo cheddar, bacon crocante, cebola crispy, barbecue e maionese defumada.</p></div><p class="item-price"><span>R$</span>39</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Pé na Jaka</p><p class="item-desc">Pão brioche, 2x smash burger 100g, queijo cheddar, onion rings, alface americana e tomate.</p></div><p class="item-price"><span>R$</span>42</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Bagunça</p><p class="item-desc">Pão brioche, burger blend 150g, muçarela, maionese verde, cebola roxa, molho barbecue, creme de gorgonzola e cebola caramelizada.</p></div><p class="item-price"><span>R$</span>42</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Rebuliço</p><p class="item-desc">Pão brioche selado, cream cheese, burguer de costela 150g, muçarela, abacaxi, melado de cana e bacon.</p></div><p class="item-price"><span>R$</span>45</p></div>
+    <p class="subsection-title">Molho extra</p>
+    <div class="item"><div class="item-info"><p class="item-name">Barbecue / Gorgonzola / Maionese Defumada / Maionese Verde / Sweet Chili / Tártaro</p></div><p class="item-price"><span>R$</span>8</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Alface e Tomate extra</p></div><p class="item-price"><span>R$</span>6</p></div>
+  </section>
+
+  <!-- SOBREMESAS -->
+  <section class="section" id="sobremesas">
+    <p class="section-title">Sobremesas</p>
+    <div class="section-divider"></div>
+    <div class="item"><div class="item-info"><p class="item-name">Petit Gateau</p><p class="item-desc">Mini bolo de chocolate com recheio cremoso, servido com sorvete de creme.</p></div><p class="item-price"><span>R$</span>29</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Brownie</p><p class="item-desc">Brownie de chocolate coberto por bola de sorvete com paçoca de amendoim.</p></div><p class="item-price"><span>R$</span>29</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Pizza Doce</p><p class="item-desc">Sabores: Chocolate Branco, Chocolate Preto, Confete, Dois Amores, Banana Nevada, Prestígio e Sensação.</p></div><p class="item-price"><span>R$</span>39</p></div>
+  </section>
+
+  <!-- CHOPP -->
+  <section class="section" id="chopp">
+    <p class="section-title">Chopp</p>
+    <div class="section-divider"></div>
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>350ml</th>
+          <th>1L</th>
+          <th>Torre 2,5L</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Pilsen Alfero</td><td class="gold">14</td><td class="gold">32</td><td class="gold">84</td></tr>
+        <tr><td>Vinho Alfero</td><td class="gold">16</td><td class="gold">39</td><td class="gold">99</td></tr>
+        <tr><td>Witbier Alfero</td><td class="gold">16</td><td class="gold">39</td><td class="gold">99</td></tr>
+        <tr><td>IPA Alfero</td><td class="gold">18</td><td class="gold">42</td><td class="gold">99</td></tr>
+        <tr><td>Pilsen Brahma</td><td class="gold">16</td><td class="gold">39</td><td class="gold">99</td></tr>
+        <tr><td>Pilsen Amstel</td><td class="gold">16</td><td class="gold">39</td><td class="gold">99</td></tr>
+        <tr><td>IPA Schornstein</td><td class="gold">18</td><td class="gold">42</td><td class="gold">99</td></tr>
+      </tbody>
+    </table>
+    <div class="item"><div class="item-info"><p class="item-name">Régua de Chopp</p><p class="item-desc">5 estilos</p></div><p class="item-price"><span>R$</span>59</p></div>
+    <p class="note">Demais estilos Schornstein: consulte a disponibilidade com os garçons.</p>
+  </section>
+
+  <!-- CERVEJAS -->
+  <section class="section" id="cervejas">
+    <p class="section-title">Cervejas</p>
+    <div class="section-divider"></div>
+    <p class="subsection-title">Garrafa 600ml</p>
+    <div class="item"><div class="item-info"><p class="item-name">Budweiser</p></div><p class="item-price"><span>R$</span>19</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Original</p></div><p class="item-price"><span>R$</span>20</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Heineken</p></div><p class="item-price"><span>R$</span>22</p></div>
+    <p class="subsection-title">Long Neck</p>
+    <div class="item"><div class="item-info"><p class="item-name">Budweiser</p></div><p class="item-price"><span>R$</span>14</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Amstel Ultra <small style="color:rgba(240,236,224,0.3);font-size:11px">sem glúten</small></p></div><p class="item-price"><span>R$</span>14</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Corona</p></div><p class="item-price"><span>R$</span>15</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Heineken</p></div><p class="item-price"><span>R$</span>15</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Heineken 0% Álcool</p></div><p class="item-price"><span>R$</span>15</p></div>
+    <p class="subsection-title">Combo Long Necks · 5 und.</p>
+    <div class="item"><div class="item-info"><p class="item-name">Budweiser</p></div><p class="item-price"><span>R$</span>65</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Amstel Ultra</p></div><p class="item-price"><span>R$</span>65</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Corona</p></div><p class="item-price"><span>R$</span>70</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Heineken</p></div><p class="item-price"><span>R$</span>70</p></div>
+    <p class="subsection-title">Vinhos</p>
+    <div class="item"><div class="item-info"><p class="item-name">Taça Tinto Colonial <small style="color:rgba(240,236,224,0.3);font-size:11px">200ml</small></p></div><p class="item-price"><span>R$</span>15</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Taça Cabernet Sauvignon <small style="color:rgba(240,236,224,0.3);font-size:11px">200ml</small></p></div><p class="item-price"><span>R$</span>24</p></div>
+  </section>
+
+  <!-- BEBIDAS -->
+  <section class="section" id="bebidas">
+    <p class="section-title">Bebidas</p>
+    <div class="section-divider"></div>
+    <div class="item"><div class="item-info"><p class="item-name">Água sem gás <small style="color:rgba(240,236,224,0.3);font-size:11px">500ml</small></p></div><p class="item-price"><span>R$</span>7</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Água com gás <small style="color:rgba(240,236,224,0.3);font-size:11px">500ml</small></p></div><p class="item-price"><span>R$</span>7</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Água Tônica</p></div><p class="item-price"><span>R$</span>10</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Citrus / Coca / Coca Zero / Guaraná / Guaraná Zero</p></div><p class="item-price"><span>R$</span>10</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">H2O Limão <small style="color:rgba(240,236,224,0.3);font-size:11px">500ml</small></p></div><p class="item-price"><span>R$</span>12</p></div>
+    <p class="subsection-title">Suco natural · 300ml</p>
+    <div class="item"><div class="item-info"><p class="item-name">Abacaxi · Abacaxi com Hortelã · Laranja · Limão · Maracujá · Melancia · Morango · Limonada Suíça · Uva Integral</p></div><p class="item-price"><span>R$</span>15</p></div>
+    <p class="subsection-title">Kombucha · 320ml</p>
+    <div class="item"><div class="item-info"><p class="item-name">Limão com Gengibre Matcha / Morango com Hibisco / Maçã com Cranberry</p></div><p class="item-price"><span>R$</span>17</p></div>
+    <p class="subsection-title">Red Bull</p>
+    <div class="item"><div class="item-info"><p class="item-name">Tradicional e Tropical</p></div><p class="item-price"><span>R$</span>20</p></div>
+  </section>
+
+  <!-- DRINKS -->
+  <section class="section" id="drinks">
+    <p class="section-title">Drinks</p>
+    <div class="section-divider"></div>
+    <div class="item"><div class="item-info"><p class="item-name">Acapulco</p><p class="item-desc">Melancia, gengibre e tequila. O drink mais pedido do verão!</p></div><p class="item-price"><span>R$</span>29</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Mojito</p><p class="item-desc">Rum branco, hortelã e limão. Leve e refrescante.</p></div><p class="item-price"><span>R$</span>32</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Piña Colada</p><p class="item-desc">Rum, leite de coco e abacaxi.</p></div><p class="item-price"><span>R$</span>32</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Margarita</p><p class="item-desc">Tequila, licor de laranja e limão.</p></div><p class="item-price"><span>R$</span>32</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Sex on the Beach</p><p class="item-desc">Refrescante e com a cara do verão.</p></div><p class="item-price"><span>R$</span>32</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Moscow Mule</p><p class="item-desc">Vodka, suco de limão fresco e gengibre.</p></div><p class="item-price"><span>R$</span>32</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Gin Coconut e Gin Tropical</p><p class="item-desc">Gin com o frescor do verão e energia do Redbull.</p></div><p class="item-price"><span>R$</span>34</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Gin Tônica Cítrica com Alecrim</p><p class="item-desc">Morango ou maracujá. Gin, hortelã, limão, alecrim e fruta da escolha.</p></div><p class="item-price"><span>R$</span>34</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Aperol Spritz</p><p class="item-desc">Aperol, espumante e água com gás.</p></div><p class="item-price"><span>R$</span>35</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Negroni</p><p class="item-desc">Gin, vermute rosso e Campari, finalizado com casca de laranja.</p></div><p class="item-price"><span>R$</span>35</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Clericot</p><p class="item-desc">Vinho branco, frutas frescas da estação, espumante e licor de laranja.</p></div><p class="item-price"><span>R$</span>35</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Bianco Verano</p><p class="item-desc">Vinho branco suave, limonada fresca e soda.</p></div><p class="item-price"><span>R$</span>35</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Tinto Verano</p><p class="item-desc">Vinho tinto frutado e gelado com refrigerante de limão ou soda.</p></div><p class="item-price"><span>R$</span>35</p></div>
+    <p class="subsection-title">Sem álcool</p>
+    <div class="item"><div class="item-info"><p class="item-name">Soda Italiana</p></div><p class="item-price"><span>R$</span>25</p></div>
+    <div class="note" style="margin-top:12px">* Também podem ser feitos sem álcool: Acapulco, Piña Colada, Sex on the Beach, Mojito e Moscow Mule.</div>
+  </section>
+
+  <!-- CAIPIRINHAS -->
+  <section class="section" id="caipirinhas">
+    <p class="section-title">Caipirinhas</p>
+    <div class="section-divider"></div>
+    <div class="item"><div class="item-info"><p class="item-name">Caipirinha</p><p class="item-desc">Cachaça ou Vinho.</p></div><p class="item-price"><span>R$</span>27</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Caipiroska</p><p class="item-desc">Vodka, Steinhaeger ou Sakê.</p></div><p class="item-price"><span>R$</span>28</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Caipirinha Tropical</p><p class="item-desc">Vodka, Cachaça ou Vinho.</p></div><p class="item-price"><span>R$</span>32</p></div>
+    <div class="highlight-note">Escolha sua fruta: Morango · Maracujá · Abacaxi · Limão · Kiwi</div>
+    <p class="subsection-title">Batidinha</p>
+    <div class="item"><div class="item-info"><p class="item-name">Batidinha</p><p class="item-desc">Batida brasileira nos sabores abacaxi, morango, maracujá e coco.</p></div><p class="item-price"><span>R$</span>32</p></div>
+  </section>
+
+  <!-- DOSES -->
+  <section class="section" id="doses">
+    <p class="section-title">Doses</p>
+    <div class="section-divider"></div>
+    <div class="item"><div class="item-info"><p class="item-name">Cachaça</p></div><p class="item-price"><span>R$</span>8</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Cachaça Premium</p></div><p class="item-price"><span>R$</span>12</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Campari</p></div><p class="item-price"><span>R$</span>15</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Bacardi</p></div><p class="item-price"><span>R$</span>16</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Steinhaeger / Martini</p></div><p class="item-price"><span>R$</span>17</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Gin Tanqueray</p></div><p class="item-price"><span>R$</span>19</p></div>
+    <p class="subsection-title">Conhaque</p>
+    <div class="item"><div class="item-info"><p class="item-name">Domeq</p></div><p class="item-price"><span>R$</span>17</p></div>
+    <p class="subsection-title">Tequila</p>
+    <div class="item"><div class="item-info"><p class="item-name">José Cuervo Prata</p></div><p class="item-price"><span>R$</span>22</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">José Cuervo Ouro</p></div><p class="item-price"><span>R$</span>24</p></div>
+    <p class="subsection-title">Vodka</p>
+    <div class="item"><div class="item-info"><p class="item-name">Smirnoff</p></div><p class="item-price"><span>R$</span>17</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Absolut</p></div><p class="item-price"><span>R$</span>22</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Cîroc</p></div><p class="item-price"><span>R$</span>25</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Grey Goose</p></div><p class="item-price"><span>R$</span>27</p></div>
+    <p class="subsection-title">Whisky</p>
+    <div class="item"><div class="item-info"><p class="item-name">Johnnie Walker Red Label</p></div><p class="item-price"><span>R$</span>20</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Jack Daniels Tradicional</p></div><p class="item-price"><span>R$</span>22</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Johnnie Walker Black Label</p></div><p class="item-price"><span>R$</span>24</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Jack Daniels Honey</p></div><p class="item-price"><span>R$</span>24</p></div>
+    <p class="subsection-title">Licores</p>
+    <div class="item"><div class="item-info"><p class="item-name">Amarula / Cointreau</p></div><p class="item-price"><span>R$</span>19</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Jagermeister</p></div><p class="item-price"><span>R$</span>21</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Frangelico</p></div><p class="item-price"><span>R$</span>25</p></div>
+    <div class="item"><div class="item-info"><p class="item-name">Lycor 43</p></div><p class="item-price"><span>R$</span>27</p></div>
+  </section>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.section');
+  const links = document.querySelectorAll('.cat-nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const id = entry.target.id;
+        const active = document.querySelector('.cat-nav a[href="#' + id + '"]');
+        if (active) {
+          active.classList.add('active');
+          active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      }
+    });
+  }, { rootMargin: '-30% 0px -65% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
